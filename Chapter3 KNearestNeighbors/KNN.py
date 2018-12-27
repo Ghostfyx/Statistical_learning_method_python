@@ -55,6 +55,7 @@ else:
 # data
 iris = load_iris()
 df = pd.DataFrame(iris.data, columns=iris.feature_names)
+df.groupby()
 df['label'] = iris.target
 df.columns = ['sepal length', 'sepal width', 'petal length', 'petal width', 'label']
 print(df.head(1))
@@ -72,7 +73,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 
 class KNN:
-    def __init__(self, X_train, y_train, n_neighbors=3, p=2):
+    def __init__(self, X_train, y_train, n_neighbors=10, p=2):
         """
         parameter: n_neighbors 临近点个数
         parameter: p 距离度量
@@ -94,21 +95,22 @@ class KNN:
             dist = np.linalg.norm(X - self.X_train[i], ord=self.p)
             if knn_list[max_index][0] > dist:
                 knn_list[max_index] = (dist, self.y_train[i])
+        label_map = {}
+        for item in knn_list:
+            if item[1] in label_map:
+                label_map[item[1]] += 1
+            else:
+                label_map[item[1]] = 1
+        sorted(label_map.items(), key=lambda items: items[1])
+        return list(label_map.keys())[-1]
 
-        # 统计
-        knn = [k[-1] for k in knn_list]
-        count_pairs = Counter(knn)
-        max_count = sorted(count_pairs, key=lambda x: x)[-1]
-        return max_count
-
-    def score(self, X_test, y_test):
+    def source(self, X_test, y_test):
         right_count = 0
-        n = 10
         for X, y in zip(X_test, y_test):
             label = self.predict(X)
             if label == y:
                 right_count += 1
-        return right_count / len(X_test)
+        print('the right count is:', (right_count / len(X_test)))
 
 clf = KNN(X_train, y_train)
-clf.score(X_test, y_test)
+clf.source(X_test, y_test)

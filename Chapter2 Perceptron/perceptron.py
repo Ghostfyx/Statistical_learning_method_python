@@ -54,6 +54,7 @@ class Model_Perceptron:
                     self.b = self.b + alpha*y_item
                     wrong_count += 1
             if wrong_count == 0:
+                is_wrong=True
                 break
                 print('model build done')
 
