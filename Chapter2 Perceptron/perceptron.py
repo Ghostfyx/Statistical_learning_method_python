@@ -46,6 +46,7 @@ class Model_Perceptron:
         is_wrong = False
         while not is_wrong:
             wrong_count = 0
+            # 遍历直到数据集没有没有错误分类点
             for i in range(X.shape[0]):
                 x_item = X.iloc[i]
                 y_item = y[i]
