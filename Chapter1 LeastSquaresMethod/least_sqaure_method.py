@@ -35,7 +35,9 @@ def fitting(M=0):
     M    为 多项式的次数
     """
     # 随机初始化多项式参数
+    print('m:', M)
     p_init = np.random.rand(M + 1)
+    print('p_init:', p_init)
     # 最小二乘法
     p_lsq = leastsq(residuals_func, p_init, args=(x, y))
     print('Fitting Parameters:', p_lsq[0])
